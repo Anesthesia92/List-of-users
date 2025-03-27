@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {CommonModule} from '@angular/common';
+
+import {UsersListComponent} from './components/users-list/users-list.component';
+import {UserHeaderComponent} from './components/user-header/user-header.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [UsersListComponent, CommonModule, UserHeaderComponent,],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  standalone: true,
 })
 export class AppComponent {
-  title = 'listOfUsers';
+  title = 'list of users';
 }

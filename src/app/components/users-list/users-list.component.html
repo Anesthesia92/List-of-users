@@ -1,0 +1,119 @@
+<p-table
+  #dt1
+  [value]="customers"
+  [globalFilterFields]="['name','username']"
+  [tableStyle]="{ 'min-width': '50rem', 'background': 'white' }"
+  [rows]="5"
+  [paginator]="true"
+  [loading]="isLoading"
+  [expandedRowKeys]="expandedRows"
+  dataKey="id"
+  responsiveLayout="scroll"
+  loadingIcon="pi pi-spin pi-spinner"
+  [rowsPerPageOptions]="[5, 7, 10]"
+>
+  <ng-template #caption>
+    <p-iconfield iconPosition="left">
+      <p-inputicon>
+        <i class="pi pi-search"></i>
+      </p-inputicon>
+      <input
+        pInputText
+        #tableSearchInput
+        type="text"
+        (input)="dt1.filterGlobal(tableSearchInput.value.trim(), 'contains')"
+        placeholder="Search by name"
+      />
+    </p-iconfield>
+  </ng-template>
+
+  <ng-template #header>
+    <tr>
+      <th style="min-width: 5rem"></th>
+      <th class="w-20-rem">Имя</th>
+      <th class="w-20-rem">Ник</th>
+      <th pSortableColumn="address.city" class="w-30-rem">
+        Адрес
+        <p-sortIcon field="address.city"/>
+      </th>
+
+      <th class="w-30-rem">
+        Компания
+      </th>
+      <th style="min-width: 5rem">
+        Сайт
+      </th>
+    </tr>
+  </ng-template>
+
+  <ng-template #body let-user let-expanded="expanded" let-index>
+    <tr>
+      <td>
+        <p-button type="button" pRipple
+                  [pRowToggler]="user" [text]="true"
+                  [rounded]="true" [plain]="true"
+                  [label]="'Подробнее'"
+                  [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"/>
+      </td>
+
+      <td>
+        {{ user?.name }}
+      </td>
+
+      <td>
+        {{ user?.username }}
+      </td>
+
+      <td>
+        <span class="font-semibold">{{ user.address.city }}</span>
+        <div class="flex flex-wrap gap-2">
+          <span>{{ user.address?.street }}</span>
+          <span>{{ user.address?.suite }}</span>
+          <span>{{ user.address?.zipcode }}</span>
+          <span>{{ user.address?.geo?.lat }} {{ user.address?.geo?.lng }}</span>
+        </div>
+
+      </td>
+
+      <td>
+        <span class="font-semibold">{{ user.company.name }}</span>
+        <div class="flex flex-wrap gap-2">
+          <span>{{ user.company?.catchPhrase }}</span>
+          <span>{{ user.company?.bs }}</span>
+        </div>
+      </td>
+
+      <td>
+        <a href="{{user?.website}}" target="_blank">
+          <p-button label="Ссылка" [link]="true" icon="pi pi-external-link">
+          </p-button>
+        </a>
+      </td>
+    </tr>
+
+    <ng-template #expandedrow let-userAdd>
+      <tr>
+        <td colspan="2">
+          <div class="pl-4 pr-4">
+            <tr>
+              <th style="min-width: 5rem" class="font-semibold">Email</th>
+              <th style="min-width: 5rem" class="font-semibold">Телефон</th>
+            </tr>
+            <tr>
+              <td class="p-2">{{ userAdd.email }}</td>
+              <td class="p-2">{{ userAdd.phone }}</td>
+            </tr>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+  </ng-template>
+
+  <ng-template #emptymessage>
+    <tr>
+      <td colspan="6" class="font-medium">Пользователей не найдено</td>
+    </tr>
+  </ng-template>
+
+</p-table>
